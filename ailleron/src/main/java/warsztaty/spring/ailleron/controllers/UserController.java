@@ -1,9 +1,11 @@
 package warsztaty.spring.ailleron.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import warsztaty.spring.ailleron.exceptions.UserExistException;
@@ -34,5 +36,14 @@ public class UserController {
         return service.addUser(user);
     }
 
+    @PutMapping("/users")
+    public User modifyUser(@RequestBody User user) throws UserNotFoundException {
+        return service.modifyUser(user);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable Long id) throws UserNotFoundException {
+        service.deleteUser(id);
+    }
 
 }

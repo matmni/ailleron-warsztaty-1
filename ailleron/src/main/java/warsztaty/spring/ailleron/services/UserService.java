@@ -26,6 +26,7 @@ public class UserService {
         return users.stream().filter(u -> u.getName().equals(name)).findFirst();
     }
 
+
     public User getUserByName(String name) throws UserNotFoundException {
         Optional<User> user = findUserByName(name);
         if (user.isPresent()) {
@@ -35,17 +36,40 @@ public class UserService {
         throw new UserNotFoundException("Nie znaleziono użytkownika o imieniu: " + name);
     }
 
+    public List<User> getAllUsers() {
+        return users;
+    }
+
     public Long addUser(User user) throws UserExistException {
         Optional<User> existingUser = findUserByName(user.getName());
         if (existingUser.isPresent()) {
             throw new UserExistException("Użytkownik o imieniu " + user.getName() + " istnieje");
         }
-        user.setId(Long.valueOf(users.size() +1));
+        user.setId(Long.valueOf(users.size() + 1));
         users.add(user);
         return user.getId();
     }
 
-    public List<User> getAllUsers() {
-        return users;
+    public User modifyUser(User user) throws UserNotFoundException {
+        deleteUserById(user.getId());
+        users.add(user);
+        return user;
     }
+
+    private Optional<User> findUserById(Long id) {
+        return users.stream().filter(u -> u.getId().compareTo(id) == 0).findFirst();
+    }
+
+    private void deleteUserById(Long id) throws UserNotFoundException {
+        Optional<User> modifiedUser = findUserById(id);
+        if (!modifiedUser.isPresent()) {
+            throw new UserNotFoundException("Nie znaleziono użytkownika o id: " + id);
+        }
+        users.remove(modifiedUser.get());
+    }
+
+    public void deleteUser(Long id) throws UserNotFoundException {
+        deleteUserById(id);
+    }
+
 }
