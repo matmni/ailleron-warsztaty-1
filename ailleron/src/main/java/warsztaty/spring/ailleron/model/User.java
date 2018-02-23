@@ -16,7 +16,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "user")
     private Long id;
-    @Size(min = 2, max = 20, message = "Złe imie.")
+    @Size(min = 2, max = 20, message = "{user.name.info}")
     private String name;
     private String surname;
     @Min(value = 18, message = "Wiek powinien być powyżej 18 lat.")
