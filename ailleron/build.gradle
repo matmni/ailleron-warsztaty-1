@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.0.0.M2'
+		springBootVersion = '2.0.0.RC2'
 	}
 	repositories {
 		mavenCentral()
@@ -15,7 +15,6 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
 
 group = 'warsztaty.spring'
 version = '0.0.1-SNAPSHOT'
@@ -29,9 +28,6 @@ repositories {
 
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-hateoas')
-	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-	runtime('org.springframework.boot:spring-boot-devtools')
 }
