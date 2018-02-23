@@ -31,10 +31,10 @@ public class UserController {
     @Autowired
     UserService service;
 
-//    @GetMapping("/users/{name}")
-//    public User getSurnameByName(@PathVariable String name) throws UserNotFoundException {
-//        return service.getUserByName(name);
-//    }
+    @GetMapping("/users/{name}")
+    public User getSurnameByName(@PathVariable String name) throws UserNotFoundException {
+        return service.getUserByName(name);
+    }
 
     @GetMapping("/users/{id}")
     public User getUserById(@PathVariable Long id) throws UserNotFoundException {

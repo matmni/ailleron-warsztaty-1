@@ -1,9 +1,11 @@
 package warsztaty.spring.ailleron.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import warsztaty.spring.ailleron.exceptions.UserExistException;
 import warsztaty.spring.ailleron.exceptions.UserNotFoundException;
 import warsztaty.spring.ailleron.model.User;
+import warsztaty.spring.ailleron.repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,18 +14,15 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    static List<User> users = new ArrayList<>();
+    private UserRepository repository;
 
-    public UserService() {
-        if (users.isEmpty()) {
-            users.add(new User(1L, "Mateusz", "Mnich", 28));
-            users.add(new User(2L, "Aleksander", "Kwaśniewski", 58));
-            users.add(new User(3L, "Andrzej", "Duda", 45));
-        }
+    @Autowired
+    public UserService(UserRepository repository) {
+        this.repository = repository;
     }
 
     private Optional<User> findUserByName(String name) {
-        return users.stream().filter(u -> u.getName().equals(name)).findFirst();
+        return repository.getUserByName(name);
     }
 
     public User getUserById(Long id) throws UserNotFoundException {
@@ -44,7 +43,7 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-        return users;
+        return repository.findAll();
     }
 
     public Long addUser(User user) throws UserExistException {
@@ -52,19 +51,18 @@ public class UserService {
         if (existingUser.isPresent()) {
             throw new UserExistException("Użytkownik o imieniu " + user.getName() + " istnieje");
         }
-        user.setId(Long.valueOf(users.size() + 1));
-        users.add(user);
+        user = repository.save(user);
         return user.getId();
     }
 
     public User modifyUser(User user) throws UserNotFoundException {
         deleteUserById(user.getId());
-        users.add(user);
+        user = repository.save(user);
         return user;
     }
 
     private Optional<User> findUserById(Long id) {
-        return users.stream().filter(u -> u.getId().compareTo(id) == 0).findFirst();
+        return repository.findById(id);
     }
 
     private void deleteUserById(Long id) throws UserNotFoundException {
@@ -72,7 +70,7 @@ public class UserService {
         if (!modifiedUser.isPresent()) {
             throw new UserNotFoundException("Nie znaleziono użytkownika o id: " + id);
         }
-        users.remove(modifiedUser.get());
+        repository.deleteById(id);
     }
 
     public void deleteUser(Long id) throws UserNotFoundException {

@@ -1,11 +1,17 @@
 package warsztaty.spring.ailleron.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
+@Entity
 public class User {
 
+    @Id
+    @GeneratedValue
     private Long id;
     @Size(min = 2, max = 20, message = "Złe imie.")
     private String name;
