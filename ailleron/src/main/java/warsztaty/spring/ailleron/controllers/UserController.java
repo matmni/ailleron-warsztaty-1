@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import warsztaty.spring.ailleron.exceptions.UserExistException;
 import warsztaty.spring.ailleron.exceptions.UserNotFoundException;
 import warsztaty.spring.ailleron.model.User;
+import warsztaty.spring.ailleron.model.UserList;
 import warsztaty.spring.ailleron.services.UserService;
 
 import javax.validation.Valid;
@@ -41,16 +42,20 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return service.getAllUsers();
+    public UserList getAllUsers() {
+        return new UserList(service.getAllUsers());
     }
 
     @PostMapping("/users")
     public ResponseEntity<Resource<Long>> addUser(@RequestBody @Valid User user) throws UserExistException, UserNotFoundException {
         Long id = service.addUser(user);
         Resource<Long> resource = new Resource<>(id);
+
         ControllerLinkBuilder linkTo = linkTo(methodOn(this.getClass()).getUserById(id));
         resource.add(linkTo.withRel("get-user"));
+
+        linkTo = linkTo(methodOn(this.getClass()).getAllUsers());
+        resource.add(linkTo.withRel("get-users"));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(resource);
     }

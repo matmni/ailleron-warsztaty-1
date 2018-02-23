@@ -8,5 +8,6 @@ public class AilleronApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AilleronApplication.class, args);
+		System.out.println("Test");
 	}
 }
