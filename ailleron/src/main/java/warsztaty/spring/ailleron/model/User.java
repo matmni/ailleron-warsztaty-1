@@ -2,16 +2,19 @@ package warsztaty.spring.ailleron.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.TableGenerator;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 @Entity
+@TableGenerator(name = "user", initialValue = 3)
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "user")
     private Long id;
     @Size(min = 2, max = 20, message = "Złe imie.")
     private String name;
