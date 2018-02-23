@@ -26,6 +26,13 @@ public class UserService {
         return users.stream().filter(u -> u.getName().equals(name)).findFirst();
     }
 
+    public User getUserById(Long id) throws UserNotFoundException {
+        Optional<User> user = findUserById(id);
+        if (user.isPresent()) {
+            return user.get();
+        }
+        throw new UserNotFoundException("Użytkownik o id: " + id + " nie istnieje");
+    }
 
     public User getUserByName(String name) throws UserNotFoundException {
         Optional<User> user = findUserByName(name);

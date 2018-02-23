@@ -1,10 +1,17 @@
 package warsztaty.spring.ailleron.model;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
 public class User {
 
     private Long id;
+    @Size(min = 2, max = 20, message = "Złe imie.")
     private String name;
     private String surname;
+    @Min(value = 18, message = "Wiek powinien być powyżej 18 lat.")
+    @Max(value = 110, message = "Wiek powinien być poniżej 110 lat.")
     private int age;
 
     public User() {
